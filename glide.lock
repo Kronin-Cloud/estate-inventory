@@ -1,0 +1,28 @@
+hash: 20add3b0b20f95aed4bb8779c782e6fc1674cc20f4b5d1e8909cadd166c84e88
+updated: 2018-10-11T20:40:54.827816+02:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: 06ea1031745cb8b3dab3f6a236daf2b0aa468b7e
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: e3702bed27f0d39777b0b37b664b6280e8ef8fbf
+- name: github.com/jinzhu/gorm
+  version: 6ed508ec6a4ecb3531899a69cbc746ccf65a4166
+  subpackages:
+  - dialects/postgres
+- name: github.com/jinzhu/inflection
+  version: 04140366298a54a039076d798123ffa108fff46c
+- name: github.com/joho/godotenv
+  version: 23d116af351c84513e1946b527c88823e476be13
+- name: github.com/lib/pq
+  version: 4ded0e9383f75c197b3a2aaa6d590ac52df6fd79
+  subpackages:
+  - hstore
+  - oid
+- name: golang.org/x/crypto
+  version: 7c1a557ab941a71c619514f229f0b27ccb0c27cf
+  subpackages:
+  - bcrypt
+  - blowfish
+testImports: []
