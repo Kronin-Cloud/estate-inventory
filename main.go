@@ -22,7 +22,6 @@ func main() {
 	router.HandleFunc("/user/{userId}", controllers.DeleteUser).Methods("DELETE")
 
 	router.HandleFunc("/login", controllers.Login).Methods("POST")
-	router.HandleFunc("/login", controllers.Logout).Methods("DELETE")
 	router.HandleFunc("/metrics", controllers.Metrics).Methods("GET")
 	router.HandleFunc("/healthz", controllers.Healthz).Methods("GET")
 

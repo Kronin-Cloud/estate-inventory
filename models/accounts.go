@@ -7,12 +7,15 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"os"
 	"strings"
+	"time"
 )
 
 /*
 JWT claims struct
 */
 type Token struct {
+	IssuedAt    int64
+	ExpiresAt    int64
 	UserId uint
 	jwt.StandardClaims
 }
@@ -52,7 +55,6 @@ func (account *Account) Validate() (map[string]interface{}, bool) {
 }
 
 func (account *Account) Create() map[string]interface{} {
-
 	if resp, ok := account.Validate(); !ok {
 		return resp
 	}
@@ -98,7 +100,8 @@ func Login(email, password string) map[string]interface{} {
 	account.Password = ""
 
 	//Create JWT token
-	tk := &Token{UserId: account.ID}
+	expire := time.Now().Add(time.Minute * 1).Unix()
+	tk := &Token{UserId: account.ID, IssuedAt: time.Now().Unix(), ExpiresAt: expire}
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
 	account.Token = tokenString //Store the token in the response

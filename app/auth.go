@@ -2,16 +2,19 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"github.com/Kronin-Cloud/estate-inventory/models"
 	u "github.com/Kronin-Cloud/estate-inventory/utils"
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 var JwtAuthentication = func(next http.Handler) http.Handler {
-
+//var JwtAuthentication = func(next http.HandlerFunc) http.HandlerFunc {
+	fmt.Printf("Authenticating JWT")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		notAuth := []string{"/api/user/new", "/api/user/login"} //List of endpoints that doesn't require auth
@@ -68,11 +71,22 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			u.Respond(w, response)
 			return
 		}
-
+		fmt.Sprintf("Token valid for: %s", getTokenRemainingValidity(tk.ExpiresAt))
 		//Everything went well, proceed with the request and set the caller to the user retrieved from the parsed token
-		//fmt.Sprintf("User %s", tk.UserId) //Useful for monitoring
+		fmt.Sprintf("User %s", tk.UserId) //Useful for monitoring
 		ctx := context.WithValue(r.Context(), "user", tk.UserId)
 		r = r.WithContext(ctx)
 		next.ServeHTTP(w, r) //proceed in the middleware chain!
 	})
+}
+
+func getTokenRemainingValidity(timestamp interface{}) int {
+	if validity, ok := timestamp.(float64); ok {
+		tm := time.Unix(int64(validity), 0)
+		remainer := tm.Sub(time.Now())
+		if remainer > 0 {
+			return int(remainer.Seconds())
+		}
+	}
+	return -1
 }
